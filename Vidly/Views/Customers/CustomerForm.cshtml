@@ -1,0 +1,88 @@
+﻿@model Vidly.ViewModels.CustomerFormViewModel
+
+@{
+    ViewBag.Title = "New Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+
+@using (Html.BeginForm("Save", "Customers"))
+{
+    @Html.ValidationSummary(true, "Please resolve the issues in the highlighted input boxes.")
+    <div class="form-group" id="customer">
+        @Html.LabelFor(m => m.Customer.Name)
+        @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
+        @*<div class="alert alert-danger" style="max-width: 280px" role="alert">*@
+        @Html.ValidationMessageFor(m => m.Customer.Name)
+        @*</div>*@
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.BirthDate)
+        @Html.TextBoxFor(m => m.Customer.BirthDate, "{0:d MMMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.BirthDate)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.MemberShipTypeId)
+        @Html.DropDownListFor(m => m.Customer.MemberShipTypeId, new SelectList(Model.MemberShipTypes, "Id", "Name"), "Select Membership", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.MemberShipTypeId)
+    </div>
+
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsLetter) Subscribe to newsletter?
+        </label>
+    </div>
+    @Html.HiddenFor(m => m.Customer.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+     if(!Model.IsNewCustomer)
+     {
+          <button type="button" data-customer-id="@Model.Customer.Id" class="btn btn-danger js-delete" data-customer-name="@Model.Customer.Name">Delete</button>
+     }
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+
+        $(".js-delete").on("click", "",
+            function () {
+                var button = $(this);
+                bootbox.confirm({
+                    message: "Are you sure you want to delete the customer: <text style=\"color: red\">" +
+                        $(this).attr("data-customer-name") +
+                        "</text>",
+                    backdrop: true,
+                    buttons: {
+                        confirm: {
+                            label: 'DELETE',
+                            className: 'btn-danger'
+                        },
+                        cancel: {
+                            label: 'CANCEL'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/customers/" + button.attr("data-customer-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    $(location).attr('href', '/Customers');
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+    </script>
+}
+

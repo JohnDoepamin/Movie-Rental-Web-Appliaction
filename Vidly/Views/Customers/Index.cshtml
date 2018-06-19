@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Vidly.Models.Customer>
+
+@{
+    ViewBag.Title = "Customers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+
+@if (Model.Any())
+{
+    <table id="customers" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Full Name</th>
+                <th scope="col">Discount Rate</th>
+                <th scope="col">Membership Type</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
+                    <td>@Html.ActionLink(customer.MemberShipType.DiscountRate.ToString() + "%", "Edit", "Customers", new { id = customer.Id }, null)</td>
+                    <td>@Html.ActionLink(customer.MemberShipType.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
+                    <td>
+                        <button data-customer-id="@customer.Id" class="btn btn-danger btn-sm js-delete" data-customer-name="@customer.Name" >Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There are no customers registered in the database.</p>
+}
+
+@Html.ActionLink("Add Customer", "New", "", new { @class = "btn btn-primary" })
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+ 
+@section scripts
+{
+    <script>
+
+        $(document).ready(function() {
+            $("#customers").DataTable();
+
+            $("#customers").on("click", ".js-delete",
+                function() {
+                    var button = $(this);
+                    bootbox.confirm({
+                        message: "Are you sure you want to delete the customer: <text style=\"color: red\">" +
+                            $(this).attr("data-customer-name") +
+                            "</text>",
+                        backdrop: true,
+                        buttons: {
+                            confirm: {
+                                label: 'Yes',
+                                className: 'btn-danger'
+                            },
+                            cancel: {
+                                label: 'No',
+                                className: 'btn-success'
+                            }
+                        },
+                        callback: function(result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "/api/customers/" + button.attr("data-customer-id"),
+                                    method: "DELETE",
+                                    success: function() {
+                                        button.parents("tr").remove();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+        });
+    </script>
+}
