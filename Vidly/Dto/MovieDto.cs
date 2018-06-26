@@ -22,6 +22,8 @@ namespace Vidly.Dto
 
         public DateTime AddedDate => DateTime.Now;
 
+        public GenreDto Genre { get; set; }
+
         [Required]
         public byte GenreId { get; set; }
 

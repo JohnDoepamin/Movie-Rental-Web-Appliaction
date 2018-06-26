@@ -65,6 +65,7 @@ namespace Vidly.Controllers
             return View("MovieForm", viewModel);
         }
 
+
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -76,22 +77,12 @@ namespace Vidly.Controllers
         }
 
         //public ActionResult Index(int? pageIndex, string sortBy)
-        public ActionResult Index()
+        public ViewResult Index()
         {
-            //if (!pageIndex.HasValue)
-            //    pageIndex = 1;
+            if (User.IsInRole(RoleName.CanManageMovies))
+                return View("List");
 
-            //if (string.IsNullOrWhiteSpace(sortBy))
-            //    sortBy = "Name";
-
-            //var viewModel = new MovieViewModel()
-            //{
-            //    Movies = _movies
-            //};
-
-            var movies = _context.Movies.Include(c => c.Genre);
-
-            return View(movies);
+            return View("ReadOnlyList");
             //return Content(String.Format("pageIndex={0}&sortBy={1}", pageIndex, sortBy));
         }
 
@@ -100,6 +91,7 @@ namespace Vidly.Controllers
             return Content(year + "/" + month);
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult New()
         {
             var genres = _context.Genres.ToList();

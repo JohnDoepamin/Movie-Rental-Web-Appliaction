@@ -7,9 +7,13 @@
 
 <h2>New Movie</h2>
 
+@*@Html.ValidationSummary(false, "Please resolve the following issues:")*@
+@Html.ValidationSummary("Please resolve the following issues:")
+@*@Html.ValidationSummary(true,"Please resolve the following issues:")*@
+
 @using (Html.BeginForm("Save", "Movies"))
 {
-    @Html.ValidationSummary(false,"Please resolve the following issues:")
+
     <div class="form-group">
         @Html.LabelFor(m => m.Movie.Name)
         @Html.TextBoxFor(model => model.Movie.Name, new { @class = "form-control" })

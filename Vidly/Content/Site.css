@@ -35,3 +35,7 @@ textarea {
     float:right;
     margin-left: 10px;
 }
+
+.body-content {
+    padding-top: 10px;
+}
