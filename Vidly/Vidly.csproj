@@ -73,6 +73,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -229,6 +230,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\CustomersController.cs" />
     <Compile Include="Controllers\Api\MoviesController.cs" />
+    <Compile Include="Controllers\Api\NewRentalsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -237,6 +239,7 @@
     <Compile Include="Dto\GenreDto.cs" />
     <Compile Include="Dto\MemberShipTypeDto.cs" />
     <Compile Include="Dto\MovieDto.cs" />
+    <Compile Include="Dto\NewRentalDto.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -313,10 +316,15 @@
     <Compile Include="Migrations\201806231718119_AddedPhoneNumberToApplicationUser.Designer.cs">
       <DependentUpon>201806231718119_AddedPhoneNumberToApplicationUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806261831011_AddedRentalsToDomainModel.cs" />
+    <Compile Include="Migrations\201806261831011_AddedRentalsToDomainModel.Designer.cs">
+      <DependentUpon>201806261831011_AddedRentalsToDomainModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Rental.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="Models\Genre.cs" />
@@ -740,6 +748,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806231718119_AddedPhoneNumberToApplicationUser.resx">
       <DependentUpon>201806231718119_AddedPhoneNumberToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806261831011_AddedRentalsToDomainModel.resx">
+      <DependentUpon>201806261831011_AddedRentalsToDomainModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -298,3 +298,4 @@ I:\ELearning\c#\MVC\Movie-Rental-Web-Appliaction\Vidly\bin\Glimpse.AspNet.dll
 I:\ELearning\c#\MVC\Movie-Rental-Web-Appliaction\Vidly\bin\Glimpse.Core.dll
 I:\ELearning\c#\MVC\Movie-Rental-Web-Appliaction\Vidly\bin\Glimpse.EF6.dll
 I:\ELearning\c#\MVC\Movie-Rental-Web-Appliaction\Vidly\bin\Glimpse.Mvc5.dll
+I:\ELearning\c#\MVC\Movie-Rental-Web-Appliaction\Vidly\obj\Debug\Vidly.Migrations.AddedRentalsToDomainModel.resources
