@@ -234,6 +234,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\CheckInRentalsController.cs" />
     <Compile Include="Controllers\Api\CustomersController.cs" />
     <Compile Include="Controllers\Api\MoviesController.cs" />
     <Compile Include="Controllers\Api\NewRentalsController.cs" />
@@ -338,6 +339,10 @@
     <Compile Include="Migrations\201807010638333_AddedSpecialDiscountToCustomer.cs" />
     <Compile Include="Migrations\201807010638333_AddedSpecialDiscountToCustomer.Designer.cs">
       <DependentUpon>201807010638333_AddedSpecialDiscountToCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807011046544_AddActiveRentalsToCustomer.cs" />
+    <Compile Include="Migrations\201807011046544_AddActiveRentalsToCustomer.Designer.cs">
+      <DependentUpon>201807011046544_AddActiveRentalsToCustomer.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -722,6 +727,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Rentals\New.cshtml" />
+    <Content Include="Views\Rentals\List.cshtml" />
     <None Include="Web.Testing.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -800,6 +806,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807010638333_AddedSpecialDiscountToCustomer.resx">
       <DependentUpon>201807010638333_AddedSpecialDiscountToCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807011046544_AddActiveRentalsToCustomer.resx">
+      <DependentUpon>201807011046544_AddActiveRentalsToCustomer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

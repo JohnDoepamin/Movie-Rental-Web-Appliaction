@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <th scope="col">Full Name</th>
+                <th scope="col">Active Rentals</th>
                 <th scope="col">Discount Rate</th>
                 <th scope="col">Membership Type</th>
                 <th scope="col">Delete</th>
@@ -21,14 +22,15 @@
         <tbody>
             @foreach (var customer in Model)
             {
-                <tr>
-                    <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
-                    <td>@Html.ActionLink((customer.MemberShipType.DiscountRate + customer.SpecialDiscount).ToString() + "%", "Edit", "Customers", new { id = customer.Id }, null)</td>
-                    <td>@Html.ActionLink(customer.MemberShipType.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
-                    <td>
-                        <button data-customer-id="@customer.Id" class="btn btn-danger btn-sm js-delete" data-customer-name="@customer.Name" >Delete</button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
+                <td>@customer.ActiveRentals out of @customer.MemberShipType.MaximumActiveRentals</td>
+                <td>@Html.ActionLink((customer.MemberShipType.DiscountRate + customer.SpecialDiscount).ToString() + "%", "Edit", "Customers", new { id = customer.Id }, null)</td>
+                <td>@Html.ActionLink(customer.MemberShipType.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
+                <td>
+                    <button data-customer-id="@customer.Id" class="btn btn-danger btn-sm js-delete" data-customer-name="@customer.Name">Delete</button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

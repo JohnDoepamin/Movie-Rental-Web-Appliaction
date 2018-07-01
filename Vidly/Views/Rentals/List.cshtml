@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Vidly.Models.Rental>
+
+@{
+    ViewBag.Title = "Active Rentals";
+}
+
+<h2>Current Rentals</h2>
+
+@if (Model.Any())
+{
+    <table id="rentals" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Customer</th>
+                <th scope="col">Movie</th>
+                <th scope="col">Date Rented</th>
+                <th scope="col">Date Returned</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rental in Model)
+            {
+            <tr>
+                <td>@Html.ActionLink(rental.Customer.Name, "Edit", "Customers", new { id = rental.Customer.Id }, null)</td>
+                <td>@rental.Movie.Name</td>
+                <td>@rental.DateRented.ToString("D")</td>
+                @if (rental.DateReturned == null)
+                {
+                    <td>
+                        <button data-rental-id="@rental.Id" data-customer-name="@rental.Customer.Name" data-movie-name="@rental.Movie.Name" class="btn btn-danger btn-sm js-checkIn">Check In</button>
+                    </td>
+                }
+                else
+                {
+                    <td>@rental.DateReturned.Value.ToString("D")</td>
+                }
+
+
+
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There are no customers registered in the database.</p>
+}
+
+@Html.ActionLink("Add Rental", "New", "", new { @class = "btn btn-primary" })
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css" />
+
+@section scripts
+{
+    <script>
+
+        $(document).ready(function() {
+            $("#rentals").DataTable();
+
+            $("#rentals").on("click", ".js-checkIn",
+                function() {
+                    var button = $(this);
+                    bootbox.confirm({
+                        message: "Are you sure you want to check in the movie <text style=\"color: red\">" +
+                            $(this).attr("data-movie-name") +
+                            "</text> for the customer <text style=\"color: red\">" +
+                            $(this).attr("data-customer-name") +
+                            "</text>",
+                        backdrop: true,
+                        buttons: {
+                            confirm: {
+                                label: 'Yes',
+                                className: 'btn-danger'
+                            },
+                            cancel: {
+                                label: 'No',
+                                className: 'btn-success'
+                            }
+                        },
+                        callback: function(result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "/api/CheckInRentals/" + button.attr("data-rental-id"),
+                                    method: "POST",
+                                    success: function () {
+                                        button.parents("td").append("@DateTime.Now.ToString("D")");
+                                        button.remove();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+        });
+    </script>
+}

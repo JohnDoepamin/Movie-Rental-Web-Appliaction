@@ -26,7 +26,7 @@ namespace Vidly.Controllers.Api
         
         }
 
-        // GET /rentals
+        // POST /rentals
         [HttpPost]
         public IHttpActionResult AddNewRentals(NewRentalDto newRental)
         {
@@ -37,6 +37,9 @@ namespace Vidly.Controllers.Api
                 return BadRequest("No movieIds have been provided.");
 
             var customer = _context.Customers.SingleOrDefault(c => c.Id == newRental.CustomerId);
+
+            if(customer.IsDelinquent)
+                return BadRequest("Customer is delinquent, rental of movies forbidden.");
 
             if (customer == null)
                 return BadRequest("Invalid customerId.");
@@ -61,6 +64,7 @@ namespace Vidly.Controllers.Api
                 };
 
                 _context.Rentals.Add(rental);
+                customer.ActiveRentals++;
             }
 
             _context.SaveChanges();

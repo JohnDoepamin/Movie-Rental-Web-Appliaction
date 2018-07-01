@@ -8,27 +8,30 @@
 
 <form id="newRental">
 
-    <div class="form-group">
-        <label>Customer</label>
-        <div class="tt-container">
-            <input id="customer" name="customer" data-rule-validCustomer="true" required type="text" value="" class="form-control" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Movie</label>
-        <div class="tt-container">
-            <input id="movie" name="movie" data-rule-validMovie="true" type="text" value="" class="form-control" />
-        </div>
-    </div>
-
     <div class="row">
-        <div class="col-md-4 col-sm-4">
-            <ul id="movies" class="list-group"></ul>
+        <div class="col-4">
+            <div class="form-group">
+                <label>Customer</label>
+                <div class="tt-container">
+                    <input id="customer" name="customer" data-rule-validCustomer="true" required type="text" value="" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Movie</label>
+                <div class="tt-container">
+                    <input id="movie" name="movie" data-rule-validMovie="true" type="text" value="" class="form-control" />
+                </div>
+            </div>
+
+            <button class="btn btn-primary">Submit</button>
+
+        </div>
+            <div class="col-6">
+                <label>Selected Movies:</label>
+                <ul id="movies" class="list-group"></ul>
         </div>
     </div>
-
-    <button class="btn btn-primary">Submit</button>
 
 </form>
 
@@ -91,14 +94,19 @@
                     vm.movieIds.push(movie.id);
                 });
 
-            $.validator.addMethod("validCustomer", function () {
-                return vm.customerId && vm.customerId > 0;
-            }, "Please select a valid customer.");
-
-            $.validator.addMethod("validCustomer", function () {
-                return vm.customerId > 0 && !vm.customerIsDelinquent
-            }, "Customer is delinquent and cant rent any movies.");
-
+            jQuery.validator.addMethod("validCustomer", function (value, element, params) {
+                if (!(vm.customerId && vm.customerId < 1)) {
+                    params[2] = "Please select a valid customer.";
+                    return false;
+                } else if (vm.customerIsDelinquent) {
+                    params[2] = "Customer is delinquent and cant rent any movies.";
+                    return false;
+                } else {
+                    params[2] = "meeeh.";
+                    return true;
+                }
+            }, "Only {0} to {1} words allowed. You have entered {2} words.");
+            
             $.validator.addMethod("validMovie", function () {
                 return vm.movieIds.length !== 0;
             }, "Please select at least one valid movie.");

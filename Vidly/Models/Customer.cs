@@ -31,5 +31,7 @@ namespace Vidly.Models
         [Display(Name = "Special Discount")]
         [Range(1, 10)]
         public byte SpecialDiscount { get; set; }
+
+        public byte ActiveRentals { get; set; }
     }
 }

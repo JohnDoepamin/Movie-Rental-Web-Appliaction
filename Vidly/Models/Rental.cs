@@ -10,7 +10,7 @@ namespace Vidly.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "You must specify the date when the rental begins.")]
+        [Required(ErrorMessage = "You must specify a date for the beginning of the rental.")]
         public DateTime DateRented { get; set; }
         
         public DateTime? DateReturned { get; set; }
