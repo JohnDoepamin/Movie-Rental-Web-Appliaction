@@ -7,6 +7,7 @@ using System.Web.Http;
 using AutoMapper;
 using Vidly.Dto;
 using Vidly.Models;
+using System.Data.Entity;
 
 namespace Vidly.Controllers.Api
 {
@@ -36,9 +37,15 @@ namespace Vidly.Controllers.Api
             if(newRental.MovieIds.Count == 0)
                 return BadRequest("No movieIds have been provided.");
 
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == newRental.CustomerId);
+            var customer = _context.Customers
+                .Include(c => c.MemberShipType)
+                .SingleOrDefault(c => c.Id == newRental.CustomerId);
 
-            if(customer.IsDelinquent)
+            var leftRentals = customer.MemberShipType.MaximumActiveRentals - customer.ActiveRentals;
+            if (newRental.MovieIds.Count > leftRentals)
+                return BadRequest("Renting movies limit reached. Customer can only rent " + leftRentals + " more movies.");
+
+            if (customer.IsDelinquent)
                 return BadRequest("Customer is delinquent, rental of movies forbidden.");
 
             if (customer == null)

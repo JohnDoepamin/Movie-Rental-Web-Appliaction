@@ -82,7 +82,7 @@ else
                             if (result) {
                                 $.ajax({
                                     url: "/api/CheckInRentals/" + button.attr("data-rental-id"),
-                                    method: "POST",
+                                    method: "PATCH",
                                     success: function () {
                                         button.parents("td").append("@DateTime.Now.ToString("D")");
                                         button.remove();

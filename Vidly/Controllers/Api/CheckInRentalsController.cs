@@ -23,7 +23,7 @@ namespace Vidly.Controllers.Api
             _context.Dispose();
         }
 
-        [HttpPost]
+        [HttpPatch]
         public IHttpActionResult CheckInRental(int id)
         {
             var rental = _context.Rentals

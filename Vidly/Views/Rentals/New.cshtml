@@ -94,29 +94,37 @@
                     vm.movieIds.push(movie.id);
                 });
 
-            jQuery.validator.addMethod("validCustomer", function (value, element, params) {
-                if (!(vm.customerId && vm.customerId < 1)) {
-                    params[2] = "Please select a valid customer.";
+            // There is a bug within this function which does not assign the value correctly to the given validator check
+            var validCustomerMessage = "error";
+            jQuery.validator.addMethod("validCustomer", function () {
+                if (!(vm.customerId && vm.customerId > 1)) {
+                    validCustomerMessage = "Please select a valid customer.";
                     return false;
                 } else if (vm.customerIsDelinquent) {
-                    params[2] = "Customer is delinquent and cant rent any movies.";
+                    validCustomerMessage = "Customer is delinquent and cant rent any movies.";
                     return false;
                 } else {
-                    params[2] = "meeeh.";
                     return true;
                 }
-            }, "Only {0} to {1} words allowed. You have entered {2} words.");
+            }, validCustomerMessage);
             
             $.validator.addMethod("validMovie", function () {
                 return vm.movieIds.length !== 0;
             }, "Please select at least one valid movie.");
 
+            var newRentalsError = "";
             var validator = $("#newRental").validate({
                 submitHandler: function() {
                     $.ajax({
                         url: "/api/newRentals",
                         method: "post",
-                        data: vm
+                        data: vm,
+                        error: function (response) {
+                            var JSONObject = JSON.parse(response.responseText);
+                            newRentalsError = JSONObject.message;
+                            //newRentalsError = response.responseText;
+                            //newRentalsError = $(response).filter('responseText').text;
+                        }
                     })
                     .done(function () {
                         toastr.success("Rentals successfully recorded.");
@@ -129,12 +137,10 @@
                         validator.resetForm();
                         })
                     .fail(function () {
-                            toastr.error("Unexpected error while applying rental action.");
+                        toastr.error(newRentalsError);
                         });
-
                     //Return false in order to prevent the form from being submited normally
                     return false;
-
                 }
             });
 
